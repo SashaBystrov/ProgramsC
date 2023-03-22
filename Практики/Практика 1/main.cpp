@@ -1,4 +1,4 @@
-﻿// Вариант 3
+// Вариант 3
 
 #include <iostream>
 #include <windows.h>
@@ -8,15 +8,15 @@
 using namespace std;
 
 struct Date {
-    unsigned short day;
-    unsigned short month;
-    unsigned short year;
+    short day;
+    short month;
+    short year;
 };
 
 struct TableData {
     char lastname[20];
     char namebook[20];
-    unsigned short year;
+    short year;
     char group;
     struct Date date;
 };
@@ -126,26 +126,31 @@ int main()
     int n = 3;
     A = (TableData*)malloc(n * sizeof(TableData));
     for (int i = 0; i < n; i++) {
-        strcpy_s(A[i].namebook, lines[i].namebook);
         strcpy_s(A[i].lastname, lines[i].lastname);
-       
+        strcpy_s(A[i].namebook, lines[i].namebook);
+        A[i].year = lines[i].year;
+        A[i].group = lines[i].group;
     }
+    A = (TableData*)realloc(A, 10 * sizeof(TableData));
     TableData** B;
     B = (TableData**) new TableData * [10];
     for (int i = 0; i < 10; i++) {
         B[i] = (TableData*) new TableData;
-        *(B[i]) = lines[i];
+        *(B[i]) = A[i];
     }
-    A = (TableData*)realloc(A, 10 * sizeof(TableData));
-    for (int i = 0; i < 3; i++) {
+    
+    for (int i = 0; i < n; i++) {
         cout << endl << "адрес A[i] " << &A[i] << " A[i]->lastname " << A[i].lastname;
         cout << endl << "адрес B[i] " << &B[i] << " B[i]->lastname " << B[i]->lastname;
-    }
-    for (int i = 0; i < 2; i++) {
         cout << endl << "адрес A[i] " << &A[i] << " A[i]->namebook " << A[i].namebook;
         cout << endl << "адрес B[i] " << &B[i] << " B[i]->namebook " << B[i]->namebook;
+        if (i != 2) {
+            cout << endl << "адрес A[i] " << &A[i] << " A[i]->year " << A[i].year;
+            cout << endl << "адрес B[i] " << &B[i] << " B[i]->year " << B[i]->year;
+            cout << endl << "адрес A[i] " << &A[i] << " A[i]->group " << A[i].group;
+            cout << endl << "адрес B[i] " << &B[i] << " B[i]->group " << B[i]->group;
+        }
     }
-    for (int i = 0; i < 10; i++) delete B[i];
     delete[]B;
     free(A);
 }
